@@ -1,0 +1,104 @@
+<style>
+    body {
+        background-color: #fff;
+        font-family: sans-serif
+    }
+
+    .progress {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        position: relative
+    }
+
+    .step {
+        display: table-cell;
+        text-align: center;
+        vertical-align: top;
+        overflow: visible;
+        position: relative;
+        font-size: 14px;
+        color: grey;
+        font-weight: 700
+    }
+
+    .step:not(:last-child):before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 37px;
+        background-color: #fff;
+        height: 6px;
+        width: 100%
+    }
+
+    .node {
+        display: inline-block;
+        border: 3px solid grey;
+        background-color: #fff;
+        border-radius: 30px;
+        height: 30px;
+        width: 30px;
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        margin-left: -18px
+    }
+
+    .step.complete:before {
+        background-color: #07c
+    }
+
+    .step.complete .node {
+        border-color: #07c;
+        background-color: #07c
+    }
+
+    .step.complete .node:before {
+        font-size: 23px;
+        color: #fff;
+        content: "✓"
+    }
+
+    .step.in-progress:before {
+        background: grey
+    }
+
+    .step.in-progress .node {
+        border-color: grey
+    }
+</style>
+<script>
+    function loaded() {
+        window.parent.postMessage("Loaded", "*");
+    }
+</script>
+<!--<div id="state">state</div>-->
+<div class="progress" onload="loaded()">
+    <div id="first" class="step in-progress">
+        Selection
+        <div class="node"></div>
+    </div>
+    <div id="second" class="step in-progress">
+        Summary
+        <div class="node"></div>
+    </div>
+    <div id="third" class="step in-progress">
+        <script type="text/javascript">
+            //const state = document.getElementById("state");
+            const first = document.getElementById("first");
+            const second = document.getElementById("second");
+            const third = document.getElementById("third");
+            window.onmessage = (event) => {
+                //state.innerHTML = event.data;
+                if (event.data == "selection complete") {
+                    first.classList.add('complete');
+                    first.classList.remove('in-progress');
+                }
+            }; 
+        </script>
+        Add to Cart
+        <div class="node"></div>
+    </div>
+</div>
