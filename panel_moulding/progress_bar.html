@@ -85,20 +85,26 @@
         <div class="node"></div>
     </div>
     <div id="third" class="step in-progress">
-        <script type="text/javascript">
-            //const state = document.getElementById("state");
-            const first = document.getElementById("first");
-            const second = document.getElementById("second");
-            const third = document.getElementById("third");
-            window.onmessage = (event) => {
-                //state.innerHTML = event.data;
-                if (event.data == "selection complete") {
-                    first.classList.add('complete');
-                    first.classList.remove('in-progress');
-                }
-            }; 
-        </script>
         Add to Cart
         <div class="node"></div>
     </div>
 </div>
+
+<script type="text/javascript">
+    //const state = document.getElementById("state");
+    const first = document.getElementById("first");
+    const second = document.getElementById("second");
+    const third = document.getElementById("third");
+    window.onmessage = (event) => {
+        //state.innerHTML = event.data;
+        if (event.data == "selection complete") {
+            if (first.classList.contains("in-progress")) {
+                first.classList.add('complete');
+                first.classList.remove('in-progress');
+            } else {
+                first.classList.add('in-progress');
+                first.classList.remove('complete');
+            }
+        }
+    }; 
+</script>
