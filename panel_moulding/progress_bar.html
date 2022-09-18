@@ -106,5 +106,14 @@
                 first.classList.remove('complete');
             }
         }
+        if (event.data == "summary complete") {
+            if (second.classList.contains("in-progress")) {
+                second.classList.add('complete');
+                second.classList.remove('in-progress');
+            } else {
+                second.classList.add('in-progress');
+                second.classList.remove('complete');
+            }
+        }
     }; 
 </script>
