@@ -10,6 +10,10 @@ var quantity98;
 var selection95;
 var selection97;
 var selection98;
+var price95;
+var price97;
+var price98;
+var totalprice;
 
 $w.onReady(function () {
 })
@@ -213,13 +217,34 @@ export async function wallwidth_change(event) {
 }
 
 
-export function wallWidthEnterButton_click(event) {
+export async function wallWidthEnterButton_click(event) {
 	$w("#summaryQuantity95").value = quantity_calculate(240).toString();
-    quantity95 = quantity_calculate(240)
+    quantity95 = quantity_calculate(240);
     $w("#summaryQuantity97").value = quantity_calculate(240).toString();
-    quantity97 = quantity_calculate(240)
+    quantity97 = quantity_calculate(240);
     $w("#summaryQuantity98").value = quantity_calculate(240).toString();
-    quantity98 = quantity_calculate(240)
+    quantity98 = quantity_calculate(240);
+	await wixData.query("PanelMoulding_95")
+        .eq("title", selection95)
+        .find()
+        .then((results) => {
+            price95 = results.items[0].price;
+        });
+    await wixData.query("PanelMoulding_97")
+        .eq("title", selection97)
+        .find()
+        .then((results) => {
+            price97 = results.items[0].price;
+        });
+    await wixData.query("PanelMoulding_98")
+        .eq("title", selection98)
+        .find()
+        .then((results) => {
+            price98 = results.items[0].price;
+        });
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
+    hide_summaryquotes();
 }
 
 export function selectionNextButton_message(event) {
@@ -264,12 +289,16 @@ export function selectionNextButton_message(event) {
 function addOne95() {
     quantity95++
     $w("#summaryQuantity95").value = quantity95.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 function minusOne95() {
     if (quantity95 > 0) {
         quantity95--;
     }
     $w("#summaryQuantity95").value = quantity95.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 export function summaryAdd95_click(event) {
 	addOne95();
@@ -278,16 +307,19 @@ export function summaryMinus95_click(event) {
 	minusOne95();
 }
 
-
 function addOne97() {
     quantity97++
     $w("#summaryQuantity97").value = quantity97.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 function minusOne97() {
     if (quantity97 > 0) {
         quantity97--;
     }
     $w("#summaryQuantity97").value = quantity97.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 export function summaryAdd97_click(event) {
 	addOne97();
@@ -301,17 +333,20 @@ export function summaryMinus97_click(event) {
 function addOne98() {
     quantity98++
     $w("#summaryQuantity98").value = quantity98.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 function minusOne98() {
     if (quantity98 > 0) {
         quantity98--;
     }
     $w("#summaryQuantity98").value = quantity98.toString();
+    totalprice = calculate_total_price();
+    $w("#summaryTotalPrice").text = "Total Price: $" + totalprice;
 }
 export function summaryAdd98_click(event) {
 	addOne98();
 }
-
 export function summaryMinus98_click(event) {
 	minusOne98();
 }
@@ -326,10 +361,35 @@ export function budgetSwitch_click(event) {
 }
 
 export function summaryQuantity95_change(event) {
+    console.log("change!!!")
 	wixData.query("PanelMoulding_95")
         .eq("title", "95883")
         .find()
         .then((results) => {
             console.log(results.items);
         });
+}
+
+function calculate_total_price() {
+    var totalprice = quantity95 * price95 + quantity97 * price97 + quantity98 * price98;
+    console.log("totalprice is " + totalprice);
+    return totalprice;
+}
+
+function hide_summaryquotes() {
+    if ($w("#summaryquote").hidden) {
+        $w("#summaryquote").show();
+    } else {
+        $w("#summaryquote").hide();
+    }
+    if ($w("#summaryproduct").hidden) {
+        $w("#summaryproduct").show();
+    } else {
+        $w("#summaryproduct").hide();
+    }
+    if ($w("#summaryquantity").hidden) {
+        $w("#summaryquantity").show();
+    } else {
+        $w("#summaryquantity").hide();
+    }
 }
